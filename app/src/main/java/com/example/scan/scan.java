@@ -53,6 +53,8 @@ public class scan extends AppCompatActivity implements ZXingScannerView.ResultHa
     private Dialog customDialog;
     Context mContext;
     BaseApiService mApiService;
+    
+    boolean status_checked[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +197,7 @@ public class scan extends AppCompatActivity implements ZXingScannerView.ResultHa
                                     id_pesan = jsonRESULTS.getJSONObject("user").getString("kursi");
                                     final String[] kursi = id_pesan.split("\\s+");
                                     final boolean[] checkedkursi = new boolean[kursi.length];
-                                    boolean status_checked = false;
+                                    status_checked = new boolean[kursi.length];
 //                                    for(int i=0; i<kursi.length; i++) {
 //                                        Toast.makeText(scan.this, kursi[i], Toast.LENGTH_SHORT). show() ;
 //                                    }
@@ -210,8 +212,8 @@ public class scan extends AppCompatActivity implements ZXingScannerView.ResultHa
 
                                             String keyVal = jsn.getString("s_kursi");
 
-                                            if (kursi.equals(keyVal)) {
-                                                status_checked = true;
+                                            if (kursi[i].equals(keyVal[i])) {
+                                                status_checked[i] = true;
                                             }
                                             Toast.makeText(mContext, keyVal, Toast.LENGTH_SHORT).show();
                                         }
