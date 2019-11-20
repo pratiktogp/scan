@@ -190,28 +190,31 @@ public class scan extends AppCompatActivity implements ZXingScannerView.ResultHa
                                 JSONObject jsonRESULTS = new JSONObject(response.body().string());
                                 if (jsonRESULTS.getString("error").equals("false")) {
                                     String success_msg = jsonRESULTS.getString("error_msg");
-//                                    Toast.makeText(mContext, success_msg, Toast.LENGTH_SHORT).show();
-
-                                     kursis = jsonRESULTS.getJSONObject("user");
-                                    for (int i = 0; i < kursis.length(); ++i) {
-
-                                        JSONObject jsn = kursis.getJSONObject(String.valueOf(i));
-
-                                        String keyVal = jsn.getString("s_kursi");
-//                                        Toast.makeText(mContext, keyVal, Toast.LENGTH_SHORT).show();
-                                    }
+                                    Toast.makeText(mContext, success_msg, Toast.LENGTH_SHORT).show();
 
                                     id_pesan = jsonRESULTS.getJSONObject("user").getString("kursi");
-                                    final String [] kursi = id_pesan.split("\\s+");
+                                    final String[] kursi = id_pesan.split("\\s+");
                                     final boolean[] checkedkursi = new boolean[kursi.length];
+                                    boolean status_checked = false;
 //                                    for(int i=0; i<kursi.length; i++) {
 //                                        Toast.makeText(scan.this, kursi[i], Toast.LENGTH_SHORT). show() ;
 //                                    }
                                     AlertDialog.Builder builder = new AlertDialog.Builder(scan.this);
                                     builder.setTitle("Scan Result");
-                                    for(int i=0; i<kursi.length; i++){
+                                    for (int i = 0; i < kursi.length; i++) {
 //                                        final List<String> colorsList = Arrays.asList(kursi);
+                                        kursis = jsonRESULTS.getJSONObject("user");
+                                        for (int j = 0; j < kursis.length(); ++j) {
 
+                                            JSONObject jsn = kursis.getJSONObject(String.valueOf(j));
+
+                                            String keyVal = jsn.getString("s_kursi");
+
+                                            if (kursi.equals(keyVal)) {
+                                                status_checked = true;
+                                            }
+                                            Toast.makeText(mContext, keyVal, Toast.LENGTH_SHORT).show();
+                                        }
 //                                        builder.setMessage((CharSequence) colorsList);
 //                                        builder.setMultiChoiceItems(kursi,checkedkursi,new DialogInterface.OnMultiChoiceClickListener(){
 //                                            @Override
@@ -232,7 +235,7 @@ public class scan extends AppCompatActivity implements ZXingScannerView.ResultHa
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 //                                                        Toast.makeText(scan.this, "Position: " + which + " Value: " + kursi[which] + " State: " + (isChecked ? "checked" : "unchecked"), Toast.LENGTH_LONG).show();
-                                                        checkedkursi[which]=isChecked;
+                                                        checkedkursi[which] = status_checked;
                                                     }
                                                 }
                                         );
@@ -251,7 +254,7 @@ public class scan extends AppCompatActivity implements ZXingScannerView.ResultHa
                                                     checkedkursi[i] = false;
                                                 }
                                             }
-                                            String dataPilih = ""+stringBuilder.toString().trim();
+                                            String dataPilih = "" + stringBuilder.toString().trim();
                                             requestnonton(dataPilih, scanResult);
 //                                                Toast.makeText(scan.this, dataPilih, Toast.LENGTH_LONG).show();
                                         }
@@ -264,6 +267,20 @@ public class scan extends AppCompatActivity implements ZXingScannerView.ResultHa
                                     });
                                     AlertDialog alert1 = builder.create();
                                     alert1.show();
+
+                                    kursis = jsonRESULTS.getJSONObject("user");
+                                    for (int i = 0; i < kursis.length(); ++i) {
+
+                                        JSONObject jsn = kursis.getJSONObject(String.valueOf(i));
+
+                                        String keyVal = jsn.getString("s_kursi");
+
+//                                        if( kursi.equals( keyVal )  ) {
+//                                            holder.itemView.setEnabled(false);
+//                                            holder.kursi.setBackgroundColor(Color.parseColor("#E94818"));
+//                                        }
+                                        Toast.makeText(mContext, keyVal, Toast.LENGTH_SHORT).show();
+                                    }
 //                                    AlertDialog.Builder builder = new AlertDialog.Builder(scan.this);
 //                                    builder.setTitle("Scan Result");
 //                                    builder.setMessage("" +id_pesan);
@@ -300,7 +317,7 @@ public class scan extends AppCompatActivity implements ZXingScannerView.ResultHa
                 });
     }
 
-    private void requestnonton(String nonton,String hasil_scan) {
+    private void requestnonton(String nonton, String hasil_scan) {
         loading = ProgressDialog.show(scan.this, null, "Harap Tunggu...", true, false);
         mApiService.nontonRequest(nonton, hasil_scan)
                 .enqueue(new Callback<ResponseBody>() {
