@@ -7,7 +7,7 @@
     tools:context=".coba">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

@@ -15,6 +15,11 @@ public interface BaseApiService {
     @POST("masuk.php")
     Call<ResponseBody> scanRequest(@Field("id_pesan") String id_pesan);
 
+    @FormUrlEncoded
+    @POST("masuk1.php")
+    Call<ResponseBody> nontonRequest(@Field("nonton") String nonton,
+                                     @Field("id_pesan") String id_pesan);
+
     @GET("masuk1.php")
     Call<List<list_kursi>> getKursi(
             @Query("item_type") String item_type
